@@ -4,8 +4,9 @@ from selenium.webdriver.common.by import By
 
 def test_add_element(driver):
     """Verify that adding an element displays the delete button."""
-    add_on_click = AddRemoveElement(driver).load()
-    add_on_click.add_element()
+    button_click = AddRemoveElement(driver)
+    button_click.load()
+    button_click.add_element()
     assert driver.find_elements(*AddRemoveElement.DELETE_BUTTON)
 
     # assert driver.find_elements(
@@ -14,9 +15,10 @@ def test_add_element(driver):
 
 def test_delete_element(driver):
     """Verify that deleting an element removes the delete button."""
-    click = AddRemoveElement(driver).load()
-    click.add_element()
+    button_click = AddRemoveElement(driver)
+    button_click.load()
+    button_click.add_element()
 
-    click.delete_element()
+    button_click.delete_element()
 
     assert driver.find_elements(*AddRemoveElement.DELETE_BUTTON) == []
