@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "dd314026-1c58-4537-9d78-9494678968a3",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "56482429",
+		"_collection_link": "https://john-mnjoroge456-7092598.postman.co/workspace/JOHN-NJOROGE's-Workspace~9dc5dd90-8068-4323-8f5e-e90c1ce92cae/collection/56482429-dd314026-1c58-4537-9d78-9494678968a3?action=share&source=collection_link&creator=56482429"
+	},
+	"item": [
+		{
+			"name": "Post Lifecycle",
+			"item": [
+				{
+					"name": "CREATE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"var schema={",
+									"    \"type\":\"object\",",
+									"    \"properties\":{",
+									"        \"title\":{\"type\":\"string\"},",
+									"        \"body\":{\"type\":\"string\"},",
+									"        \"userId\":{\"type\":\"integer\"},",
+									"        \"id\":{\"type\":\"integer\"}",
+									"    },",
+									"    \"required\":[\"title\",\"body\",\"userId\",\"id\"]",
+									"};",
+									"pm.test(\"Status code is 201\",function(){",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"pm.test(\"Response Matches schema\",function(){",
+									"    pm.expect(jsonData).to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"pm.environment.set(\"newPostId\",jsonData.id);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"My Test Post\",\n    \"body\":\"This is a test post body\",\n    \"userId\":1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET/RETRIEVE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 (mock does not persist created post)\",function(){",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/{{newPostId}}",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"{{newPostId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"var schema={",
+									"    \"type\":\"object\",",
+									"    \"Properties\":{",
+									"        \"id\":{\"type\":\"integer\"},",
+									"        \"title\":{\"type\":\"string\"},",
+									"        \"body\":{\"type\":\"string\"},",
+									"        \"userId\":{\"type\":\"integer\"}",
+									"    },",
+									"    \"required\" :[\"id\",\"title\",\"body\",\"userId\"]",
+									"};",
+									"pm.test(\"Status code is 200\",function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"response matches schema\",function(){",
+									"    pm.expect(jsonData).to.have.jsonSchema(schema);",
+									"});",
+									"pm.test(\"Title updated correctly\",function(){",
+									"    pm.expect(jsonData.title).to.eql(\"My Updated Test Post\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 101,\n    \"title\": \"My Updated Test Post\",\n    \"body\": \"This body has been updated\",\n    \"userId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Code is 200\",function(){",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
